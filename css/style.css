@@ -1,0 +1,33 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'RocknRoll One', sans-serif;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/pokemon.png");
+    background-attachment: fixed;
+}
+
+.overlay {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+#myChart {
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+
+.secondchart {
+    float: left;
+    height: 50%;
+}
+
+.thirdchart {
+    width: 50%;
+    height: 50%;
+    float: left;
+}
