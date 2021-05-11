@@ -5,29 +5,56 @@
 }
 
 .container {
+    background-image: url("../img/pokemon.png");
     width: 100%;
     height: 100%;
-    background-image: url("../img/pokemon.png");
     background-attachment: fixed;
 }
 
 .overlay {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 100%;
 }
 
-#myChart {
-    width: 50%;
+.firstrow {
+    width: 100%;
     height: 50%;
-    float: left;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.firstchart {
+    width: 50%;
 }
 
 .secondchart {
-    float: left;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    margin-left: 15%;
+}
+
+.secondrow {
+    width: 100%;
     height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .thirdchart {
-    width: 50%;
-    height: 50%;
-    float: left;
+    margin-top: 15px;
+    width: 30%;
+    margin-left: 5%;
+}
+
+.text {
+    width: 40%;
+    height: 20%;
+    margin-left: 20%;
+    font-size: 20px;
 }

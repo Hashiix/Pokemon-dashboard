@@ -13,111 +13,167 @@
 <body>
     <div class="container">
         <div class="overlay">
-            <div class="firstchart">
-                <canvas id="myChart"></canvas>
-                <script>
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                            datasets: [{
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+            <div class="firstrow">
+                <div class="firstchart">
+                    <canvas id="myChart"></canvas>
+                    <script>
+                        d3.csv("pokedex.csv").then(makeChart);
+
+                        function makeChart(pokemons) {
+                            var pokemonLabels = pokemons.map(function(d) {return d.generation});
+
+                            function foo(pokemonLabels) {
+                                var a = [], b = [], prev;
+
+                                pokemonLabels.sort();
+                                for ( var i = 0; i < pokemonLabels.length; i++ ) {
+                                    if ( pokemonLabels[i] !== prev ) {
+                                        a.push('Generation ' + pokemonLabels[i]);
+                                        b.push(1);
+                                    } else {
+                                        b[b.length-1]++;
+                                    }
+                                    prev = pokemonLabels[i];
+                                }
+
+                                return [a, b];
+                            }
+
+                            var result = foo(pokemonLabels);
+
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: result[0],
+                                    datasets: [{
+                                        label: 'Number of Pokémons by generation',
+                                        data: result[1],
+                                        backgroundColor: [
+                                            'rgba(54, 162, 235, 0.8)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(54, 162, 235, 1)',
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+
+                <div class="secondchart">
+                    <canvas id="mySecondChart"></canvas>
+                    <script>
+                        d3.csv("pokedex.csv").then(makeChart);
+
+                        function makeChart(pokemons) {
+                            var pokemonLabels = pokemons.map(function (d) {
+                                return d.type_1;
+                            });
+
+                            var pokemonLabels2 = pokemons.map(function (d) {
+                                return d.type_2;
+                            });
+
+                            var types = pokemonLabels.concat(pokemonLabels2);
+
+
+                            function foo(types) {
+                                var a = [], b = [], prev;
+
+                                types.sort();
+                                for (var i = 0; i < types.length; i++) {
+                                    if (types[i] !== prev && types[i] !== "") {
+                                        a.push(types[i]);
+                                        b.push(1);
+                                    } else if (types[i] !== "") {
+                                        b[b.length - 1]++;
+                                    }
+                                    prev = types[i];
+                                }
+                                console.log(b);
+
+                                return [a, b];
+                            }
+
+                            var result = foo(types);
+                            var ctx = document.getElementById('mySecondChart').getContext('2d');
+                            var mySecondChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: result[0],
+                                    datasets: [{
+                                        label: "Population (millions)",
+                                        backgroundColor: ["#92c22b", "#5a5365", "#036dc4", "#f4d339", "#ed90e7", "#cf3f6b", "#ff9e54", "#90abdf", "#5169ad", "#63bd5a", "#da7943", "#74cfc1", "#929ba3", "#ab6bc8", "#fa727a", "#c6b88d", "#5a8fa3", "#4f91d7"],
+                                        data: result[1]
+                                    }]
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Pokémons by type',
+                                        position: 'bottom',
+                                    }
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="secondrow">
+                <div class="thirdchart">
+                    <canvas id="myThirdChart"></canvas>
+                    <script>
+                        var ctx = document.getElementById('myThirdChart').getContext('2d');
+                        var myThirdChart = new Chart(ctx, {
+                            type: 'radar',
+                            data: {
+                                labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+                                datasets: [
+                                    {
+                                        label: "1950",
+                                        fill: true,
+                                        backgroundColor: "rgba(179,181,198,0.2)",
+                                        borderColor: "rgba(179,181,198,1)",
+                                        pointBorderColor: "#fff",
+                                        pointBackgroundColor: "rgba(179,181,198,1)",
+                                        data: [8.77,55.61,21.69,6.62,6.82]
+                                    }, {
+                                        label: "2050",
+                                        fill: true,
+                                        backgroundColor: "rgba(255,99,132,0.2)",
+                                        borderColor: "rgba(255,99,132,1)",
+                                        pointBorderColor: "#fff",
+                                        pointBackgroundColor: "rgba(255,99,132,1)",
+                                        pointBorderColor: "#fff",
+                                        data: [25.48,54.16,7.61,8.06,4.45]
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Distribution in % of world population'
                                 }
                             }
-                        }
-                    });
-                </script>
-            </div>
+                        });
+                    </script>
+                </div>
 
-                <canvas id="mySecondChart"></canvas>
-                <script>
-                    var ctx = document.getElementById('mySecondChart').getContext('2d');
-                    var mySecondChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-                            datasets: [{
-                                label: "Population (millions)",
-                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                                data: [2478,5267,734,784,433]
-                            }]
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'Predicted world population (millions) in 2050'
-                            }
-                        }
-                    });
-                </script>
-            </div>
-
-            <div class="thirdchart">
-                <canvas id="myThirdChart"></canvas>
-                <script>
-                    var ctx = document.getElementById('myThirdChart').getContext('2d');
-                    var myThirdChart = new Chart(ctx, {
-                        type: 'radar',
-                        data: {
-                            labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-                            datasets: [
-                                {
-                                    label: "1950",
-                                    fill: true,
-                                    backgroundColor: "rgba(179,181,198,0.2)",
-                                    borderColor: "rgba(179,181,198,1)",
-                                    pointBorderColor: "#fff",
-                                    pointBackgroundColor: "rgba(179,181,198,1)",
-                                    data: [8.77,55.61,21.69,6.62,6.82]
-                                }, {
-                                    label: "2050",
-                                    fill: true,
-                                    backgroundColor: "rgba(255,99,132,0.2)",
-                                    borderColor: "rgba(255,99,132,1)",
-                                    pointBorderColor: "#fff",
-                                    pointBackgroundColor: "rgba(255,99,132,1)",
-                                    pointBorderColor: "#fff",
-                                    data: [25.48,54.16,7.61,8.06,4.45]
-                                }
-                            ]
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'Distribution in % of world population'
-                            }
-                        }
-                    });
-                </script>
-            </div>
-
-            <div class="text">
-
+                <div class="text">
+                    <h2>Dashboard project for Tech & Code Factory<br/>
+                        Done by VIEIRA BRAZ Tiago</h2>
+                </div>
             </div>
         </div>
     </div>
